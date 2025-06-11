@@ -441,14 +441,14 @@ function getLowestSitOutCount() {
 }
 function displayFieldingPositions(inning) {
     document.getElementById("inningNumber").innerHTML =
-        "Inning #" + ((inning % 7) + 1);
+        "Inning #" + ((((inning % 7) + 7) % 7) + 1);
     let sitOutsHtml = "";
     let prosciuttofieldersHtml = "";
     let genoafieldersHtml = "";
     sitOutsHtml += '<div class="twosplit">\n';
     sitOutsHtml += "<section>";
     for (let i = 0; i < prosciuttoFieldingInfo.length; i++) {
-        if (prosciuttoFieldingInfo[i].sitOutArray[inning % 7]) {
+        if (prosciuttoFieldingInfo[i].sitOutArray[((inning % 7) + 7) % 7]) {
             sitOutsHtml +=
                 "<p" +
                 (prosciuttoFieldingInfo[i].female ? ' class="female"' : "") +
@@ -460,7 +460,7 @@ function displayFieldingPositions(inning) {
     sitOutsHtml += "</section>";
     sitOutsHtml += "<section>";
     for (let i = 0; i < genoaFieldingInfo.length; i++) {
-        if (genoaFieldingInfo[i].sitOutArray[inning % 7]) {
+        if (genoaFieldingInfo[i].sitOutArray[((inning % 7) + 7) % 7]) {
             sitOutsHtml +=
                 "<p" +
                 (genoaFieldingInfo[i].female ? ' class="female"' : "") +
@@ -473,7 +473,7 @@ function displayFieldingPositions(inning) {
     sitOutsHtml += "</div>\n";
     document.getElementById("sitOuts").innerHTML = sitOutsHtml;
     for (let i = 0; i < prosciuttoFieldingInfo.length; i++) {
-        if (!prosciuttoFieldingInfo[i].sitOutArray[inning % 7]) {
+        if (!prosciuttoFieldingInfo[i].sitOutArray[((inning % 7) + 7) % 7]) {
             prosciuttofieldersHtml +=
                 "<p" +
                 (prosciuttoFieldingInfo[i].female ? ' class="female"' : "") +
@@ -493,7 +493,7 @@ function displayFieldingPositions(inning) {
             prosciuttofieldersHtml;
     }
     for (let i = 0; i < genoaFieldingInfo.length; i++) {
-        if (!genoaFieldingInfo[i].sitOutArray[inning % 7]) {
+        if (!genoaFieldingInfo[i].sitOutArray[((inning % 7) + 7) % 7]) {
             genoafieldersHtml +=
                 "<p" +
                 (genoaFieldingInfo[i].female ? ' class="female"' : "") +
