@@ -220,8 +220,6 @@ function setSitOuts() {
     let maxFemaleSitOut = femaleCount - 3;
     let lowestSitOutCount = 0;
     for (let i = 0; i < 7; i++) {
-        console.log(prosciuttoFieldingInfo);
-        console.log(genoaFieldingInfo);
         lowestSitOutCount = getLowestSitOutCount();
         let maleSitOutCount = 0;
         let femaleSitOutCount = 0;
