@@ -2,11 +2,71 @@
 <html>
     <head>
         <title>Grand Salamis</title>
+        <link rel="stylesheet" type="text/css" href="./css/navbar.css">
+        <link rel="stylesheet" type="text/css" href="./css/loader.css">
         <link rel="stylesheet" type="text/css" href="./css/base.css">
-        <script src="./js/main.js"></script>
     </head>
     <body>
-        <h1>Grand Salamis</h1>
-        <h2>Today's Lineup</h2>
+        <header>
+            <h1><a href="">Grand Salamis</a></h1>
+            <input class="menu-btn" type="checkbox" id="menu-btn" name="menu-btn" />
+            <label class="menu-icon" for="menu-btn">
+                <span class="navicon" aria-label="Hamburger menu 'icon'"></span>
+            </label>
+            <nav class="menu">
+                <a class="nav-item" href="">Lineup</a>
+                <a class="nav-item" href="">Fielding Positions</a>
+            </nav>
+        </header>
+        <section id="lineup">
+            <h2>Lineup</h2>
+            <div id="lineupcontent">
+                <div class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="lineupGenderError" style="display: none;">
+                <p>Please make sure you have at least 3 of each gender and a total of 9 players.</p>
+            </div>
+        </section>
+        <section id="positions">
+            <h2>Fielding Positions</h2>
+            <div class="threesplit">
+                <button id="previousInning" disabled>Previous</button>
+                <p id="inningNumber">Inning #</p>
+                <button id="nextInning" disabled>Next</button>
+            </div>
+            <h3>Sit outs</h3>
+            <div id="sitOuts">
+                <div class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <h3>Infield</h3>
+            <div id="infielders">
+                <div class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <h3>Outfield</h3>
+            <div id="outfielders">
+                <div class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </section>
     </body>
+    <script src="./js/main.js"></script>
 </html>

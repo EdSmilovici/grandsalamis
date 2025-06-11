@@ -1,0 +1,71 @@
+body {
+    font: 1em "Open Sans", Helvetica, sans-serif;
+    color: #333;
+    font-weight: 300;
+    width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.twosplit {
+    display: flex;
+}
+
+#prosciutto,
+#sitOuts section:first {
+    margin-right: 10px;
+}
+
+#genoa,
+#sitOuts section:last-of-type {
+    margin-left: 10px;
+}
+
+.twosplit section {
+    width: 50%;
+}
+
+.fullwidthsubmit {
+    width: 100%;
+}
+
+.threesplit {
+    display: flex;
+    justify-content: space-between;
+}
+
+.threesplit button,
+.threesplit p {
+    width: 33%;
+    text-align: center;
+}
+
+#playerForm p,
+#sitOuts p,
+#infielders p,
+#outfielders p {
+    background-color: #86c5dd;
+}
+
+#playerForm p.female,
+#sitOuts p.female,
+#infielders p.female,
+#outfielders p.female {
+    background-color: #d5c5e5;
+}
+
+#lineupGenderError p {
+    background: #fffda3;
+    text-align: center;
+    padding: 1rem;
+}
+
+button {
+    padding: 1rem;
+}
+
+@media screen and (max-width: 1100px) {
+    body {
+        width: 100%;
+    }
+}
