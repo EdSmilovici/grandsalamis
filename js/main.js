@@ -3,28 +3,28 @@ let seed = Math.floor(
     (Math.floor((Date.now() - 1000 * 60 * 60 * 5) / 86400000) % 10) + 17
 );
 let prosciutto = [
-    { name: "Ryland", female: false, present: false },
-    { name: "Kendra", female: true, present: false },
-    { name: "Sydney", female: true, present: false },
-    { name: "Malcolm", female: false, present: false },
-    { name: "Ed", female: false, present: false },
-    { name: "Carolyn", female: true, present: false },
-    { name: "Substitute_1", female: true, present: false },
-    { name: "Substitute_2", female: true, present: false },
-    { name: "Substitute_3", female: false, present: false },
-    { name: "Substitute_4", female: false, present: false },
+    { name: "Ryland", female: false, preset: false },
+    { name: "Kendra", female: true, preset: false },
+    { name: "Sydney", female: true, preset: false },
+    { name: "Malcolm", female: false, preset: false },
+    { name: "Ed", female: false, preset: false },
+    { name: "Carolyn", female: true, preset: false },
+    { name: "Substitute_1", female: true, preset: false },
+    { name: "Substitute_2", female: true, preset: false },
+    { name: "Substitute_3", female: false, preset: false },
+    { name: "Substitute_4", female: false, preset: false },
 ];
 let genoa = [
-    { name: "Navin", female: false, present: false },
-    { name: "Hannah", female: true, present: false },
-    { name: "Scott", female: false, present: false },
-    { name: "Brian", female: false, present: false },
-    { name: "Matt", female: false, present: false },
-    { name: "Malia", female: true, present: false },
-    { name: "Substitute_5", female: true, present: false },
-    { name: "Substitute_6", female: true, present: false },
-    { name: "Substitute_7", female: false, present: false },
-    { name: "Substitute_8", female: false, present: false },
+    { name: "Navin", female: false, preset: false },
+    { name: "Hannah", female: true, preset: false },
+    { name: "Scott", female: false, preset: false },
+    { name: "Brian", female: false, preset: false },
+    { name: "Matt", female: false, preset: false },
+    { name: "Malia", female: true, preset: false },
+    { name: "Substitute_5", female: true, preset: false },
+    { name: "Substitute_6", female: true, preset: false },
+    { name: "Substitute_7", female: false, preset: false },
+    { name: "Substitute_8", female: false, preset: false },
 ];
 let femaleCount = 0;
 let maleCount = 0;
@@ -94,10 +94,10 @@ function ingestFormData() {
     femaleCount = 0;
     maleCount = 0;
     for (let i = 0; i < prosciutto.length; i++) {
-        prosciutto[i].present = document.getElementById(
+        prosciutto[i].preset = document.getElementById(
             "prosciutto" + i
         ).checked;
-        if (prosciutto[i].present) {
+        if (prosciutto[i].preset) {
             if (prosciutto[i].female) {
                 femaleCount++;
             } else {
@@ -106,8 +106,8 @@ function ingestFormData() {
         }
     }
     for (let i = 0; i < genoa.length; i++) {
-        genoa[i].present = document.getElementById("genoa" + i).checked;
-        if (genoa[i].present) {
+        genoa[i].preset = document.getElementById("genoa" + i).checked;
+        if (genoa[i].preset) {
             if (genoa[i].female) {
                 femaleCount++;
             } else {
@@ -129,7 +129,7 @@ function generateFieldingPositionObject() {
     prosciuttoFieldingInfo = [];
     genoaFieldingInfo = [];
     for (let i = 0; i < prosciutto.length; i++) {
-        if (prosciutto[i].present) {
+        if (prosciutto[i].preset) {
             prosciuttoFieldingInfo.push({
                 name: prosciutto[i].name,
                 female: prosciutto[i].female,
@@ -139,7 +139,7 @@ function generateFieldingPositionObject() {
         }
     }
     for (let i = 0; i < genoa.length; i++) {
-        if (genoa[i].present) {
+        if (genoa[i].preset) {
             genoaFieldingInfo.push({
                 name: genoa[i].name,
                 female: genoa[i].female,
