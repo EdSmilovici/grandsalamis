@@ -30,7 +30,9 @@ let femaleCount = 0;
 let maleCount = 0;
 let prosciuttoFieldingInfo = [];
 let genoaFieldingInfo = [];
+let noSplitFieldingInfo = [];
 let inningCounter = 0;
+let splitFieldingPositions = true;
 function createLineup(lineup) {
     let formContent = "";
     if (lineup) {
@@ -76,6 +78,9 @@ function createLineup(lineup) {
     document
         .getElementById("previousInning")
         .addEventListener("click", previousInning);
+    document
+        .getElementById("toggleFieldingStyle")
+        .addEventListener("click", toggleFieldingStyle);
 }
 function generateFieldingPositions(event) {
     event.preventDefault();
@@ -83,9 +88,11 @@ function generateFieldingPositions(event) {
     if (isValidGenderRatio()) {
         hideGenderError();
         generateFieldingPositionObject();
+        generateNoSplitFieldingPositionObject();
         displayFieldingPositions(inningCounter);
         document.getElementById("nextInning").disabled = false;
         document.getElementById("previousInning").disabled = false;
+        document.getElementById("toggleFieldingStyle").disabled = false;
     } else {
         displayGenderError();
     }
@@ -150,6 +157,34 @@ function generateFieldingPositionObject() {
     }
     balanceProsciuttoAndGenoa();
     setSitOuts();
+}
+function generateNoSplitFieldingPositionObject() {
+    noSplitFieldingInfo = [];
+    for (let i = 0; i < prosciutto.length; i++) {
+        if (prosciutto[i].preset) {
+            noSplitFieldingInfo.push({
+                name: prosciutto[i].name,
+                female: prosciutto[i].female,
+                sitOutCount: 0,
+                infieldCount: 0,
+                outfieldCount: 0,
+                positionArray: [-1, -1, -1, -1, -1, -1, -1],
+            });
+        }
+    }
+    for (let i = 0; i < genoa.length; i++) {
+        if (genoa[i].preset) {
+            noSplitFieldingInfo.push({
+                name: genoa[i].name,
+                female: genoa[i].female,
+                sitOutCount: 0,
+                infieldCount: 0,
+                outfieldCount: 0,
+                positionArray: [-1, -1, -1, -1, -1, -1, -1],
+            });
+        }
+    }
+    setNoSplitPositions();
 }
 function getFemaleDifference() {
     let femaleDifference = 0;
@@ -425,6 +460,71 @@ function setSitOuts() {
         }
     }
 }
+function setNoSplitPositions() {
+    let maxMaleSitOut = maleCount - 3;
+    let maxFemaleSitOut = femaleCount - 3;
+    let lowestSitOutCount = 0;
+    let lowestInfieldCount = 0;
+    for (let i = 0; i < 7; i++) {
+        lowestSitOutCount = getLowestNoSplitSitOutCount();
+        lowestInfieldCount = getLowestNoSplitInfieldCount();
+        let inningSitOutCount = 0;
+        let femaleSitOutCount = 0;
+        let maleSitOutCount = 0;
+        let infieldCount = 0;
+        let sitOutAdjustment = 0;
+        while (inningSitOutCount < noSplitFieldingInfo.length - 8) {
+            for (let j = 0; j < noSplitFieldingInfo.length; j++) {
+                if (
+                    noSplitFieldingInfo[j].positionArray[i] < 0 &&
+                    noSplitFieldingInfo[j].sitOutCount - sitOutAdjustment <=
+                        lowestSitOutCount &&
+                    ((noSplitFieldingInfo[j].female &&
+                        femaleSitOutCount < maxFemaleSitOut) ||
+                        (!noSplitFieldingInfo[j].female &&
+                            maleSitOutCount < maxMaleSitOut))
+                ) {
+                    noSplitFieldingInfo[j].positionArray[i] = 0;
+                    noSplitFieldingInfo[j].sitOutCount++;
+                    inningSitOutCount++;
+                    if (noSplitFieldingInfo[j].female) {
+                        femaleSitOutCount++;
+                    } else {
+                        maleSitOutCount++;
+                    }
+                    if (inningSitOutCount >= noSplitFieldingInfo.length - 8) {
+                        break;
+                    }
+                }
+            }
+            sitOutAdjustment++;
+        }
+        let infieldAdjustment = 0;
+        while (infieldCount < 4) {
+            for (let j = 0; j < noSplitFieldingInfo.length; j++) {
+                if (
+                    noSplitFieldingInfo[j].positionArray[i] < 0 &&
+                    noSplitFieldingInfo[j].infieldCount - infieldAdjustment <=
+                        lowestInfieldCount
+                ) {
+                    noSplitFieldingInfo[j].positionArray[i] = 1;
+                    noSplitFieldingInfo[j].infieldCount++;
+                    infieldCount++;
+                    if (infieldCount >= 4) {
+                        break;
+                    }
+                }
+            }
+            infieldAdjustment++;
+        }
+        for (let j = 0; j < noSplitFieldingInfo.length; j++) {
+            if (noSplitFieldingInfo[j].positionArray[i] < 0) {
+                noSplitFieldingInfo[j].positionArray[i] = 2;
+            }
+        }
+        console.log(noSplitFieldingInfo);
+    }
+}
 function getLowestSitOutCount() {
     let lowestSitOutCount = 8;
     for (let i = 0; i < prosciuttoFieldingInfo.length; i++) {
@@ -439,7 +539,87 @@ function getLowestSitOutCount() {
     }
     return lowestSitOutCount;
 }
+function getLowestNoSplitSitOutCount() {
+    let lowestSitOutCount = 8;
+    for (let i = 0; i < noSplitFieldingInfo.length; i++) {
+        if (noSplitFieldingInfo[i].sitOutCount < lowestSitOutCount) {
+            lowestSitOutCount = noSplitFieldingInfo[i].sitOutCount;
+        }
+    }
+    return lowestSitOutCount;
+}
+function getLowestNoSplitInfieldCount() {
+    let infieldOutCount = 8;
+    for (let i = 0; i < noSplitFieldingInfo.length; i++) {
+        if (noSplitFieldingInfo[i].infieldCount < infieldOutCount) {
+            infieldOutCount = noSplitFieldingInfo[i].infieldCount;
+        }
+    }
+    return infieldOutCount;
+}
+function getLowestNoSplitOutfieldCount() {
+    let outfieldOutCount = 8;
+    for (let i = 0; i < noSplitFieldingInfo.length; i++) {
+        if (noSplitFieldingInfo[i].outfieldCount < outfieldOutCount) {
+            outfieldOutCount = noSplitFieldingInfo[i].outfieldCount;
+        }
+    }
+    return outfieldOutCount;
+}
 function displayFieldingPositions(inning) {
+    if (splitFieldingPositions) {
+        displaySplitFieldingPositions(inning);
+    } else {
+        displayNoSplitFieldingPositions(inning);
+    }
+}
+function displayNoSplitFieldingPositions(inning) {
+    document.getElementById("inningNumber").innerHTML =
+        "Inning #" + ((((inning % 7) + 7) % 7) + 1);
+    let sitOutsHtml = "";
+    let infieldersHtml = "";
+    let outfieldersHtml = "";
+    for (let i = 0; i < noSplitFieldingInfo.length; i++) {
+        if (
+            noSplitFieldingInfo[i].positionArray[((inning % 7) + 7) % 7] === 0
+        ) {
+            sitOutsHtml +=
+                "<p" +
+                (noSplitFieldingInfo[i].female ? ' class="female"' : "") +
+                ">";
+            sitOutsHtml += noSplitFieldingInfo[i].name.replace("_", " ");
+            sitOutsHtml += "</p>";
+        }
+    }
+    document.getElementById("sitOuts").innerHTML = sitOutsHtml;
+    for (let i = 0; i < noSplitFieldingInfo.length; i++) {
+        if (
+            noSplitFieldingInfo[i].positionArray[((inning % 7) + 7) % 7] === 1
+        ) {
+            infieldersHtml +=
+                "<p" +
+                (noSplitFieldingInfo[i].female ? ' class="female"' : "") +
+                ">";
+            infieldersHtml += noSplitFieldingInfo[i].name.replace("_", " ");
+            infieldersHtml += "</p>";
+        }
+    }
+    document.getElementById("infielders").innerHTML = infieldersHtml;
+    for (let i = 0; i < noSplitFieldingInfo.length; i++) {
+        if (
+            noSplitFieldingInfo[i].positionArray[((inning % 7) + 7) % 7] === 2
+        ) {
+            outfieldersHtml +=
+                "<p" +
+                (noSplitFieldingInfo[i].female ? ' class="female"' : "") +
+                ">";
+            outfieldersHtml += noSplitFieldingInfo[i].name.replace("_", " ");
+            outfieldersHtml += "</p>";
+        }
+    }
+    document.getElementById("outfielders").innerHTML = outfieldersHtml;
+}
+function displaySplitFieldingPositions(inning) {
     document.getElementById("inningNumber").innerHTML =
         "Inning #" + ((((inning % 7) + 7) % 7) + 1);
     let sitOutsHtml = "";
@@ -514,6 +694,17 @@ function nextInning() {
 }
 function previousInning() {
     inningCounter--;
+    displayFieldingPositions(inningCounter);
+}
+function toggleFieldingStyle() {
+    splitFieldingPositions = !splitFieldingPositions;
+    if (splitFieldingPositions) {
+        document.getElementById("toggleFieldingStyle").innerHTML =
+            "Toggle to no team split for fieleding";
+    } else {
+        document.getElementById("toggleFieldingStyle").innerHTML =
+            "Toggle to team split for fieleding";
+    }
     displayFieldingPositions(inningCounter);
 }
 function setConfigQueryParam(value) {
