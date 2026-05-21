@@ -1,6 +1,6 @@
 // remainder of quotient of epoch time minus 5 hours divided seconds in a day plus 17
 let seed = Math.floor(
-    (Math.floor((Date.now() - 1000 * 60 * 60 * 5) / 86400000) % 10) + 17
+    (Math.floor((Date.now() - 1000 * 60 * 60 * 5) / 86400000) % 10) + 17,
 );
 let prosciutto = [
     { name: "Ryland", female: false, preset: false },
@@ -9,10 +9,10 @@ let prosciutto = [
     { name: "Malcolm", female: false, preset: false },
     { name: "Ed", female: false, preset: false },
     { name: "Carolyn", female: true, preset: false },
+    { name: "Julia", female: true, preset: false },
     { name: "Substitute_1", female: true, preset: false },
-    { name: "Substitute_2", female: true, preset: false },
+    { name: "Substitute_2", female: false, preset: false },
     { name: "Substitute_3", female: false, preset: false },
-    { name: "Substitute_4", female: false, preset: false },
 ];
 let genoa = [
     { name: "Navin", female: false, preset: false },
@@ -21,10 +21,10 @@ let genoa = [
     { name: "Brian", female: false, preset: false },
     { name: "Matt", female: false, preset: false },
     { name: "Malia", female: true, preset: false },
-    { name: "Substitute_5", female: true, preset: false },
-    { name: "Substitute_6", female: true, preset: false },
-    { name: "Substitute_7", female: false, preset: false },
-    { name: "Substitute_8", female: false, preset: false },
+    { name: "Kyla", female: true, preset: false },
+    { name: "Colin", female: false, preset: false },
+    { name: "Substitute_4", female: true, preset: false },
+    { name: "Substitute_5", female: false, preset: false },
 ];
 let femaleCount = 0;
 let maleCount = 0;
@@ -102,7 +102,7 @@ function ingestFormData() {
     maleCount = 0;
     for (let i = 0; i < prosciutto.length; i++) {
         prosciutto[i].preset = document.getElementById(
-            "prosciutto" + i
+            "prosciutto" + i,
         ).checked;
         if (prosciutto[i].preset) {
             if (prosciutto[i].female) {
@@ -206,15 +206,15 @@ function balanceProsciuttoAndGenoa() {
     ) {
         if (prosciuttoFieldingInfo.length - genoaFieldingInfo.length > 0) {
             genoaFieldingInfo.push(
-                prosciuttoFieldingInfo[seed % prosciuttoFieldingInfo.length]
+                prosciuttoFieldingInfo[seed % prosciuttoFieldingInfo.length],
             );
             prosciuttoFieldingInfo.splice(
                 seed % prosciuttoFieldingInfo.length,
-                1
+                1,
             );
         } else {
             prosciuttoFieldingInfo.push(
-                genoaFieldingInfo[seed % genoaFieldingInfo.length]
+                genoaFieldingInfo[seed % genoaFieldingInfo.length],
             );
             genoaFieldingInfo.splice(seed % genoaFieldingInfo.length, 1);
         }
@@ -660,7 +660,7 @@ function displaySplitFieldingPositions(inning) {
                 ">";
             prosciuttofieldersHtml += prosciuttoFieldingInfo[i].name.replace(
                 "_",
-                " "
+                " ",
             );
             prosciuttofieldersHtml += "</p>";
         }
